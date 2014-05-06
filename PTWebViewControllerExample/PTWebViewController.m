@@ -10,6 +10,12 @@
 
 @interface PTWebViewController ()
 
+@property (nonatomic, strong) NSMutableArray *mutableToolbarItems;
+@property (nonatomic, strong) UIBarButtonItem *backButton;
+@property (nonatomic, strong) UIBarButtonItem *forwardButton;
+@property (nonatomic, strong) UIBarButtonItem *reloadButton;
+@property (nonatomic, strong) UIBarButtonItem *stopButton;
+
 @end
 
 @implementation PTWebViewController
@@ -59,23 +65,51 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(backButtonTapped:)];
-    self.toolbarItems = @[backButton];
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    if (!self.webView) {
+        [self createTheWebView];
+    }
+    
+    [self setupToolbar];
     
     self.webView.scalesPageToFit = YES;
     
-    self.webView.backgroundColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:194.0/255.0 alpha:1.0]; // Apple uses this in Safari on iPhone.
+    self.webView.backgroundColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:194.0/255.0 alpha:1.0]; // Apple uses this background color in Safari for iPhone.
     
     if (!self.webView.loading && self.urlString) {
         [self loadRequestFromURLString];
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+/// If this view controller was instantiated using a nib or Storyboard with the webView added as a subview of view and connected to the IBOutlet, then we don't have to use this. Otherwise we do.
+- (void)createTheWebView {
     
-    NSLog(@"viewDidAppear");
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:webView];
+}
+
+- (void)setupToolbar {
+    
+    self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self.webView action:@selector(goBack)];
+    self.forwardButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self.webView action:@selector(goForward)];
+    self.reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self.webView action:@selector(reload)];
+    self.stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self.webView action:@selector(stopLoading)];
+    
+    NSArray *allButtons = @[self.backButton, self.forwardButton, self.reloadButton];
+    NSMutableArray *mutableToolbarItems = [NSMutableArray array];
+    [allButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [mutableToolbarItems addObject:flexibleSpace];
+        [mutableToolbarItems addObject:obj];
+    }];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [mutableToolbarItems addObject:flexibleSpace];
+    
+    self.mutableToolbarItems = mutableToolbarItems;
+    
+    self.toolbarItems = mutableToolbarItems;
+    [self.navigationController setToolbarHidden:NO animated:NO];
+    
+    [self enableOrDisableBackAndForwardButtons];
 }
 
 //===============================================
@@ -90,81 +124,65 @@
     [self.webView loadRequest:request];
 }
 
-- (void)backButtonTapped:(id)test {
-    
-}
-
-//
-// Copied from https://github.com/TimOliver/TOWebViewController
-//
-- (UIColor *)webViewPageBackgroundColor {
-    
-    //Pull the current background colour from the web view
-    NSString *rgbString = [self.webView stringByEvaluatingJavaScriptFromString:@"window.getComputedStyle(document.body,null).getPropertyValue('background-color');"];
-    
-    NSLog(@"rgbString = %@", rgbString);
-    
-    //if it wasn't found, or if it isn't a proper rgb value, just return white as the default
-    if (!rgbString || [rgbString length] == 0 || [rgbString rangeOfString:@"rgb"].location == NSNotFound) {
-        return [UIColor whiteColor];
-    }
-    
-    //Assuming now the input is either 'rgb(255, 0, 0)' or 'rgba(255, 0, 0, 255)'
-    
-    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"rgba() "];
-    rgbString = [rgbString stringByTrimmingCharactersInSet:characterSet];
-    NSArray *components = [rgbString componentsSeparatedByCharactersInSet:characterSet];
-//    components = [components filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self <> ''"]];
-    rgbString = [components componentsJoinedByString:@""];
-    
-//    //remove the 'rgba' componenet
-//    rgbString = [rgbString stringByReplacingOccurrencesOfString:@"rgba" withString:@""];
-//    //conversely, remove the 'rgb' component
-//    rgbString = [rgbString stringByReplacingOccurrencesOfString:@"rgb" withString:@""];
-//    //remove the brackets
-//    rgbString = [rgbString stringByReplacingOccurrencesOfString:@"(" withString:@""];
-//    rgbString = [rgbString stringByReplacingOccurrencesOfString:@")" withString:@""];
-//    //remove all spaces
-//    rgbString = [rgbString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    // we should now have something like '0,0,0'. Split it up via the commas
-    NSArray *rgbaComponents = [rgbString componentsSeparatedByString:@","];
-    
-    // Final output componenets
-    CGFloat red, green, blue, alpha = 1.0f;
-    
-    // if the alpha value is 0, this indicates the RGB value wasn't actually set in the page, so just return white
-    if ([rgbaComponents count] < 3 || ([rgbaComponents count] >= 4 && [[rgbaComponents objectAtIndex:3] integerValue] == 0)) {
-        return [UIColor whiteColor];
-    }
-    
-    red = (CGFloat)[[rgbaComponents objectAtIndex:0] integerValue] / 255.0f;
-    green = (CGFloat)[[rgbaComponents objectAtIndex:1] integerValue] / 255.0f;
-    blue = (CGFloat)[[rgbaComponents objectAtIndex:2] integerValue] / 255.0f;
-    
-    if ([rgbaComponents count] >= 4) {
-        alpha = (CGFloat)[[rgbaComponents objectAtIndex:3] integerValue] / 255.0f;
-    }
-    
-    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-}
-
 //===============================================
 #pragma mark -
 #pragma mark UIWebViewDelegate
 //===============================================
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    return YES;
-}
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     
+    NSLog(@"🔄");
+    
+    [self showTheStopButton];
 }
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     
+    NSLog(@"✅");
+    
+    [self showTheReloadButton];
+    
+    [self enableOrDisableBackAndForwardButtons];
 }
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     
+    NSLog(@"❌ | %@", [error localizedDescription]);
+    
+    [self showTheReloadButton];
+    
+    [self enableOrDisableBackAndForwardButtons];
+}
+
+//===============================================
+#pragma mark -
+#pragma mark Toolbar Management
+//===============================================
+
+- (void)showTheReloadButton {
+    
+    NSUInteger index = [self.mutableToolbarItems indexOfObject:self.stopButton];
+    if (index != NSNotFound) {
+        [self.mutableToolbarItems replaceObjectAtIndex:index withObject:self.reloadButton];
+    }
+    
+    [self setToolbarItems:[NSArray arrayWithArray:self.mutableToolbarItems] animated:YES];
+}
+
+- (void)showTheStopButton {
+    
+    NSUInteger index = [self.mutableToolbarItems indexOfObject:self.reloadButton];
+    if (index != NSNotFound) {
+        [self.mutableToolbarItems replaceObjectAtIndex:index withObject:self.stopButton];
+    }
+    
+    [self setToolbarItems:[NSArray arrayWithArray:self.mutableToolbarItems] animated:YES];
+}
+
+- (void)enableOrDisableBackAndForwardButtons {
+    
+    self.backButton.enabled = self.webView.canGoBack;
+    self.forwardButton.enabled = self.webView.canGoForward;
 }
 
 @end

@@ -10,4 +10,7 @@
 
 @interface ViewController : UIViewController
 
+- (IBAction)presentWebView:(id)sender;
+- (IBAction)pushWebView:(id)sender;
+
 @end
