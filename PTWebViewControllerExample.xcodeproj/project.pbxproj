@@ -22,6 +22,8 @@
 		11D290921919395900E17961 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D290711919395900E17961 /* UIKit.framework */; };
 		11D2909A1919395900E17961 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11D290981919395900E17961 /* InfoPlist.strings */; };
 		11D2909C1919395900E17961 /* PTWebViewControllerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D2909B1919395900E17961 /* PTWebViewControllerExampleTests.m */; };
+		11D290A81919399E00E17961 /* PTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D290A61919399E00E17961 /* PTWebViewController.m */; };
+		11D290A91919399E00E17961 /* PTWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11D290A71919399E00E17961 /* PTWebViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,9 @@
 		11D290971919395900E17961 /* PTWebViewControllerExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PTWebViewControllerExampleTests-Info.plist"; sourceTree = "<group>"; };
 		11D290991919395900E17961 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		11D2909B1919395900E17961 /* PTWebViewControllerExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PTWebViewControllerExampleTests.m; sourceTree = "<group>"; };
+		11D290A51919399E00E17961 /* PTWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTWebViewController.h; sourceTree = "<group>"; };
+		11D290A61919399E00E17961 /* PTWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTWebViewController.m; sourceTree = "<group>"; };
+		11D290A71919399E00E17961 /* PTWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTWebViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +125,9 @@
 				11D290821919395900E17961 /* Main_iPad.storyboard */,
 				11D290851919395900E17961 /* ViewController.h */,
 				11D290861919395900E17961 /* ViewController.m */,
+				11D290A51919399E00E17961 /* PTWebViewController.h */,
+				11D290A61919399E00E17961 /* PTWebViewController.m */,
+				11D290A71919399E00E17961 /* PTWebViewController.xib */,
 				11D290881919395900E17961 /* Images.xcassets */,
 				11D290741919395900E17961 /* Supporting Files */,
 			);
@@ -231,6 +239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11D290A91919399E00E17961 /* PTWebViewController.xib in Resources */,
 				11D290841919395900E17961 /* Main_iPad.storyboard in Resources */,
 				11D290891919395900E17961 /* Images.xcassets in Resources */,
 				11D290811919395900E17961 /* Main_iPhone.storyboard in Resources */,
@@ -254,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11D290871919395900E17961 /* ViewController.m in Sources */,
+				11D290A81919399E00E17961 /* PTWebViewController.m in Sources */,
 				11D2907E1919395900E17961 /* AppDelegate.m in Sources */,
 				11D2907A1919395900E17961 /* main.m in Sources */,
 			);

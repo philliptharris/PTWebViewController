@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 
+#import "PTWebViewController.h"
+
 @interface ViewController ()
 
 @end
@@ -17,13 +19,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+//===============================================
+#pragma mark -
+#pragma mark Segue
+//===============================================
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"presentWebViewModally"]) {
+        
+        UINavigationController *vc = (UINavigationController *)segue.destinationViewController;
+        PTWebViewController *webVC = (PTWebViewController *)[vc.viewControllers firstObject];
+        webVC.urlString = @"http://www.apple.com";
+    }
 }
 
 @end
