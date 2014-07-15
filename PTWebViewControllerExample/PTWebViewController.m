@@ -147,6 +147,8 @@
     [self showTheReloadButton];
     
     [self enableOrDisableBackAndForwardButtons];
+    
+    self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
