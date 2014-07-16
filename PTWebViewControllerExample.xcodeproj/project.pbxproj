@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		115F95391976CD250010A753 /* leftArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 115F95351976CD250010A753 /* leftArrow.png */; };
+		115F953A1976CD250010A753 /* leftArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 115F95361976CD250010A753 /* leftArrow@2x.png */; };
+		115F953B1976CD250010A753 /* rightArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 115F95371976CD250010A753 /* rightArrow.png */; };
+		115F953C1976CD250010A753 /* rightArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 115F95381976CD250010A753 /* rightArrow@2x.png */; };
 		11D2906E1919395900E17961 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D2906D1919395900E17961 /* Foundation.framework */; };
 		11D290701919395900E17961 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D2906F1919395900E17961 /* CoreGraphics.framework */; };
 		11D290721919395900E17961 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D290711919395900E17961 /* UIKit.framework */; };
@@ -37,6 +41,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		115F95351976CD250010A753 /* leftArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftArrow.png; sourceTree = "<group>"; };
+		115F95361976CD250010A753 /* leftArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftArrow@2x.png"; sourceTree = "<group>"; };
+		115F95371976CD250010A753 /* rightArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rightArrow.png; sourceTree = "<group>"; };
+		115F95381976CD250010A753 /* rightArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rightArrow@2x.png"; sourceTree = "<group>"; };
 		11D2906A1919395900E17961 /* PTWebViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTWebViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11D2906D1919395900E17961 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		11D2906F1919395900E17961 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -86,6 +94,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		115F95341976CCD70010A753 /* PTWebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				11D290A51919399E00E17961 /* PTWebViewController.h */,
+				11D290A61919399E00E17961 /* PTWebViewController.m */,
+				11D290A71919399E00E17961 /* PTWebViewController.xib */,
+				115F95351976CD250010A753 /* leftArrow.png */,
+				115F95361976CD250010A753 /* leftArrow@2x.png */,
+				115F95371976CD250010A753 /* rightArrow.png */,
+				115F95381976CD250010A753 /* rightArrow@2x.png */,
+			);
+			name = PTWebViewController;
+			sourceTree = "<group>";
+		};
 		11D290611919395900E17961 = {
 			isa = PBXGroup;
 			children = (
@@ -121,14 +143,12 @@
 			children = (
 				11D2907C1919395900E17961 /* AppDelegate.h */,
 				11D2907D1919395900E17961 /* AppDelegate.m */,
+				11D290881919395900E17961 /* Images.xcassets */,
 				11D2907F1919395900E17961 /* Main_iPhone.storyboard */,
 				11D290821919395900E17961 /* Main_iPad.storyboard */,
 				11D290851919395900E17961 /* ViewController.h */,
 				11D290861919395900E17961 /* ViewController.m */,
-				11D290A51919399E00E17961 /* PTWebViewController.h */,
-				11D290A61919399E00E17961 /* PTWebViewController.m */,
-				11D290A71919399E00E17961 /* PTWebViewController.xib */,
-				11D290881919395900E17961 /* Images.xcassets */,
+				115F95341976CCD70010A753 /* PTWebViewController */,
 				11D290741919395900E17961 /* Supporting Files */,
 			);
 			path = PTWebViewControllerExample;
@@ -240,7 +260,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				11D290A91919399E00E17961 /* PTWebViewController.xib in Resources */,
+				115F953A1976CD250010A753 /* leftArrow@2x.png in Resources */,
+				115F953B1976CD250010A753 /* rightArrow.png in Resources */,
 				11D290841919395900E17961 /* Main_iPad.storyboard in Resources */,
+				115F95391976CD250010A753 /* leftArrow.png in Resources */,
+				115F953C1976CD250010A753 /* rightArrow@2x.png in Resources */,
 				11D290891919395900E17961 /* Images.xcassets in Resources */,
 				11D290811919395900E17961 /* Main_iPhone.storyboard in Resources */,
 				11D290781919395900E17961 /* InfoPlist.strings in Resources */,
@@ -480,6 +504,7 @@
 				11D290A11919395900E17961 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		11D290A21919395900E17961 /* Build configuration list for PBXNativeTarget "PTWebViewControllerExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -488,6 +513,7 @@
 				11D290A41919395900E17961 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

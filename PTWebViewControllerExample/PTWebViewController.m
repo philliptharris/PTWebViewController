@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSMutableArray *mutableToolbarItems;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, strong) UIBarButtonItem *forwardButton;
+@property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) UIBarButtonItem *reloadButton;
 @property (nonatomic, strong) UIBarButtonItem *stopButton;
 
@@ -27,11 +28,9 @@
 
 - (void)setUrlString:(NSString *)urlString {
     _urlString = urlString;
-    
     if (!self.webView) {
         return;
     }
-    
     [self loadRequestFromURLString];
 }
 
@@ -93,20 +92,21 @@
 
 - (void)setupToolbar {
     
-    self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self.webView action:@selector(goBack)];
-    self.forwardButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self.webView action:@selector(goForward)];
+    self.backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"leftArrow"] style:UIBarButtonItemStyleBordered target:self.webView action:@selector(goBack)];
+    self.forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"rightArrow"] style:UIBarButtonItemStyleBordered target:self.webView action:@selector(goForward)];
+    self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share)];
     self.reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self.webView action:@selector(reload)];
     self.stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self.webView action:@selector(stopLoading)];
     
-    NSArray *allButtons = @[self.backButton, self.forwardButton, self.reloadButton];
+    NSArray *allButtons = @[self.backButton, self.forwardButton, self.shareButton, self.reloadButton];
     NSMutableArray *mutableToolbarItems = [NSMutableArray array];
     [allButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        [mutableToolbarItems addObject:flexibleSpace];
+        if (idx != 0) {
+            UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            [mutableToolbarItems addObject:flexibleSpace];
+        }
         [mutableToolbarItems addObject:obj];
     }];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [mutableToolbarItems addObject:flexibleSpace];
     
     self.mutableToolbarItems = mutableToolbarItems;
     
@@ -126,6 +126,13 @@
     NSURL *url = [NSURL URLWithString:self.urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];
+}
+
+- (void)share {
+    
+    NSURL *URLtoShare = [self.webView.request URL];
+    UIActivityViewController *vc = [[UIActivityViewController alloc] initWithActivityItems:@[URLtoShare] applicationActivities:nil];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 //===============================================
