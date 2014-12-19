@@ -83,6 +83,7 @@
 - (void)createTheWebView {
     
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+    webView.delegate = self;
     [self.view addSubview:webView];
     
     webView.translatesAutoresizingMaskIntoConstraints = NO;
