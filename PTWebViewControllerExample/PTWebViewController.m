@@ -23,14 +23,26 @@
 
 //===============================================
 #pragma mark -
+#pragma mark Lazy Load
+//===============================================
+
+- (UIWebView *)webView {
+    if (_webView) {
+        return _webView;
+    }
+    _webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    _webView.delegate = self;
+    _webView.scalesPageToFit = YES;
+    return _webView;
+}
+
+//===============================================
+#pragma mark -
 #pragma mark Setters
 //===============================================
 
 - (void)setUrlString:(NSString *)urlString {
     _urlString = urlString;
-    if (!self.webView) {
-        return;
-    }
     [self loadRequestFromURLString];
 }
 
@@ -64,33 +76,18 @@
 {
     [super viewDidLoad];
     
-    if (!self.webView) {
-        [self createTheWebView];
-    }
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.webView];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.webView attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.webView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
     
     [self setupToolbar];
-    
-    self.webView.scalesPageToFit = YES;
-    
-    self.webView.backgroundColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:194.0/255.0 alpha:1.0]; // Apple uses this background color in Safari for iPhone.
     
     if (!self.webView.loading && self.urlString) {
         [self loadRequestFromURLString];
     }
-}
-
-/// If this view controller was instantiated using a nib or Storyboard with the webView added as a subview of view and connected to the IBOutlet, then we don't have to use this. Otherwise we do.
-- (void)createTheWebView {
-    
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    webView.delegate = self;
-    [self.view addSubview:webView];
-    
-    webView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(webView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(webView)]];
-    
-    self.webView = webView;
 }
 
 - (void)setupToolbar {
@@ -148,6 +145,8 @@
     NSLog(@"🔄");
     
     [self showTheStopButton];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -159,6 +158,8 @@
     [self enableOrDisableBackAndForwardButtons];
     
     self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -168,6 +169,8 @@
     [self showTheReloadButton];
     
     [self enableOrDisableBackAndForwardButtons];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 //===============================================
