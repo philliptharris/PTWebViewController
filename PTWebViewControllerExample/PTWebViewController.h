@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSString *urlString;
 
-@property (nonatomic, assign) BOOL showsToolbar;
+@property (nonatomic, assign) BOOL hideToolbar;
+@property (nonatomic, assign) BOOL showShareButtonTopRight;
 
 @end
