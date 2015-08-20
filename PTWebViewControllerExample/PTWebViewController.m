@@ -92,10 +92,6 @@
         UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share:)];
         self.navigationItem.rightBarButtonItem = share;
     }
-    
-    if (!self.webView.loading && self.urlString) {
-        [self loadRequestFromURLString];
-    }
 }
 
 - (void)setupToolbar {
