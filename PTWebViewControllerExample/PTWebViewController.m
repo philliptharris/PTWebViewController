@@ -83,7 +83,9 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.webView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
     
-    [self setupToolbar];
+    if (self.showsToolbar) {
+        [self setupToolbar];
+    }
     
     if (!self.webView.loading && self.urlString) {
         [self loadRequestFromURLString];
