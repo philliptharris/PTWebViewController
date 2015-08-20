@@ -162,7 +162,7 @@
     
     [self enableOrDisableBackAndForwardButtons];
     
-    self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
